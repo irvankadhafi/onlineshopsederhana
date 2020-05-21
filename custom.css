@@ -1,0 +1,28 @@
+body{
+
+}
+.main-section{
+    margin-top:20px;
+}
+.add-sens{
+    position: absolute;
+    top:0px;
+    right:30px;
+}
+.img-section{
+    overflow: hidden;
+}
+.img-section img{
+    overflow: hidden;
+    width:100%;
+}
+.img-section img:hover{
+    opacity:0.6;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.sectin-title h1{
+    font-weight:700;
+    font-size:23px;
+    color:#285A63;
+}
