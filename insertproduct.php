@@ -96,7 +96,7 @@ if(isset($_POST['btnsave']))
     // if no error occured, continue ....
     if(!isset($errMSG))
     {
-        $stmt = $conn->prepare('INSERT INTO produk(kode_produk, nama_produk,stok_produk, harga_produk,berat_produk, file_foto) VALUES(:id, :nama, :stok, :harga, :berat, :foto)');
+        $stmt = $conn->prepare('INSERT INTO produk(KODE_PRODUK, NAMA_PRODUK,STOK_PRODUK, HARGA_PRODUK,BERAT_PRODUK, FILE_FOTO) VALUES(:id, :nama, :stok, :harga, :berat, :foto)');
         $stmt->bindParam(':id',$kode);
         $stmt->bindParam(':nama',$nama);
         $stmt->bindParam(':stok',$stok);

@@ -42,11 +42,18 @@ if(!empty($_GET["aksi"])) {
 </style>
 <h1>Daftar Isi Keranjang</h1>
 <a id="btnEmpty" href="cartlist.php?aksi=empty">Hapus Semua</a>
-<table width="90%" style="margin:auto;">
+<?php
+if(isset($_SESSION["cart_item"])){
+    $total_quantity = 0;
+    $total_price = 0;
+    ?>
+    <table width="90%" style="margin:auto;">
+        <tbody>
     <tr style="background: blue;color:#fff;">
         <th style="text-align:left;">Name</th>
         <th style="text-align:left;">Code</th>
         <th style="text-align:right;" width="5%">Quantity</th>
+        <th style="text-align:right;" width="5%">Weight</th>
         <th style="text-align:right;" width="15%">Unit Price</th>
         <th style="text-align:right;" width="15%">Price</th>
         <th style="text-align:center;" width="2%">Remove</th>
@@ -55,21 +62,34 @@ if(!empty($_GET["aksi"])) {
     <?php
 
         foreach($_SESSION["cart_item"] as $item) :
-            $item_price = $item["quantity"]*$item["harga_produk"];
+            $item_price = $item["quantity"]*$item["HARGA_PRODUK"];
+            $item_weight = $item["quantity"]*$item["BERAT_PRODUK"];
         ?>
         <tr>
-            <td><img width="50" height="50" src="./img-barang/<?php echo $item["file_foto"]; ?>" class="cart-item-image" /><?php echo $item["nama_produk"]; ?></td>
-            <td><?php echo $item['kode_produk'];?></td>
+            <td><img width="50" height="50" src="./img-barang/<?php echo $item["FILE_FOTO"]; ?>" class="cart-item-image" /><?php echo $item["NAMA_PRODUK"]; ?></td>
+            <td><?php echo $item['KODE_PRODUK'];?></td>
             <td><?php echo $item['quantity'];?></td>
-            <td><?php echo rupiah($item['harga_produk']);?></td>
+            <td><?php echo $item_weight ;?></td>
+            <td><?php echo rupiah($item['HARGA_PRODUK']);?></td>
             <td><?php echo rupiah($item_price) ;?></td>
-            <td><a href="cartlist.php?aksi=remove&kode=<?php echo $item["kode_produk"]; ?>"><button>X</button></a></td>
-            </tr>
-
+            <td><a href="cartlist.php?aksi=remove&kode=<?php echo $item["KODE_PRODUK"]; ?>"><button>X</button></a></td>
+        </tr>
     <?php
+            $total_quantity += $item["quantity"];
+            $total_price += ($item["HARGA_PRODUK"]*$item["quantity"]);
         endforeach;
     ?>
+        <tr>
+            <td colspan="2">Total:</td>
+            <td><?php echo $total_quantity; ?></td>
+            <td colspan="3"><strong><?php echo rupiah($total_price); ?></strong></td>
+            <td></td>
+        </tr>
+        </tbody>
 </table>
+    <?php
+}
+    ?>
 <hr>
 <center><a href ="index.php?content=<?php echo 'product.php' ?>">KEMBALI BELANJA</a> | <a href ="index.php?content=<?php echo 'checkout.php' ?>">CHECKOUT</a> </center>
 <?php

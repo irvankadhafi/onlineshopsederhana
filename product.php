@@ -29,23 +29,26 @@ if(!isset($_GET['content']))
             switch($_GET["aksi"]) {
                 case "addcart":
                     if(!empty($_POST["quantity"])) {
-                        $stmt = $conn->prepare("SELECT * FROM produk WHERE kode_produk=:kode");
+                        $stmt = $conn->prepare("SELECT * FROM produk WHERE KODE_PRODUK=:kode");
                         $stmt->bindParam('kode', $_GET['kode']);
                         $stmt->execute();
                         $productSession = $stmt->fetchAll();
 
                         $itemArray = array(
-                            $productSession[0]["kode_produk"]=>array(
-                                'nama_produk'=>$productSession[0]["nama_produk"],
-                                'kode_produk'=>$productSession[0]["kode_produk"],
+                            $productSession[0]["KODE_PRODUK"]=>array(
+                                'ID_PRODUK'=>$productSession[0]["ID_PRODUK"],
+                                'NAMA_PRODUK'=>$productSession[0]["NAMA_PRODUK"],
+                                'KODE_PRODUK'=>$productSession[0]["KODE_PRODUK"],
+                                'BERAT_PRODUK'=>$productSession[0]["BERAT_PRODUK"],
                                 'quantity'=>$_POST["quantity"],
-                                'harga_produk'=>$productSession[0]["harga_produk"],
-                                'file_foto'=>$productSession[0]["file_foto"]));
+                                'HARGA_PRODUK'=>$productSession[0]["HARGA_PRODUK"],
+                                'STOK_PRODUK'=>$productSession[0]["STOK_PRODUK"],
+                                'FILE_FOTO'=>$productSession[0]["FILE_FOTO"]));
 
                         if(!empty($_SESSION["cart_item"])) {
-                            if(in_array($productSession[0]["kode_produk"],array_keys($_SESSION["cart_item"]))) {
+                            if(in_array($productSession[0]["KODE_PRODUK"],array_keys($_SESSION["cart_item"]))) {
                                 foreach($_SESSION["cart_item"] as $index => $v) {
-                                    if($productSession[0]["kode_produk"] == $index) {
+                                    if($productSession[0]["KODE_PRODUK"] == $index) {
                                         if(empty($_SESSION["cart_item"][$index]["quantity"])) {
                                             $_SESSION["cart_item"][$index]["quantity"] = 0;
                                         }
@@ -64,27 +67,27 @@ if(!isset($_GET['content']))
             }
         }
         foreach($result as $row):
-            if ($row['stok_produk']==0){
+            if ($row['STOK_PRODUK']== 0){
                 $ket_stok = "Habis";
             }else{
-                $ket_stok = $row[stok_produk];
+                $ket_stok = $row[STOK_PRODUK];
             }
             ?>
             <div class="col-lg-3">
-                <form method="post" action="product.php?aksi=addcart&kode=<?php echo $row['kode_produk']; ?>">
+                <form method="post" action="product.php?aksi=addcart&kode=<?php echo $row['KODE_PRODUK']; ?>">
                     <div class="section border bg-white rounded p-2">
                         <div class="row">
                             <div class="col-lg-12 img-section">
-                                <img src="./img-barang/<?php echo $row['file_foto']; ?>" class="p-0 m-0 res-ponsive">
+                                <img src="./img-barang/<?php echo $row['FILE_FOTO']; ?>" class="p-0 m-0 res-ponsive">
                                 <span class="badge badge-danger add-sens p-2 rounded-0">Stok : <?php echo $ket_stok; ?></span>
                             </div>
                             <div class="col-lg-12 sectin-title">
-                                <h1 class="pt-2" style="font-size: 12px"><?php echo $row['nama_produk']; ?></h1>
+                                <h1 class="pt-2" style="font-size: 12px"><?php echo $row['NAMA_PRODUK']; ?></h1>
                             </div>
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-2">
-                                        <span class="badge badge-success p-2"><?php echo rupiah($row['harga_produk']); ?></span>
+                                        <span class="badge badge-success p-2"><?php echo rupiah($row['HARGA_PRODUK']); ?></span>
                                     </div>
                                 </div>
                                 <hr>
@@ -104,5 +107,6 @@ if(!isset($_GET['content']))
         endforeach;
         ?>
     </div>
+</div>
 </body>
 </html>
