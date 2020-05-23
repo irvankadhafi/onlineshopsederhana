@@ -35,7 +35,7 @@ $kode_faktur = $stmt->rowCount();
         </tr>
         <tr>
             <td>BERAT PRODUK</td>
-            <td><input type="number" name="berat"> KG</td>
+            <td><input type="number" name="berat" step="0.01"> KG</td>
         </tr>
         <tr>
             <td>HARGA PRODUK</td>

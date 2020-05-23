@@ -11,47 +11,83 @@ if(!isset($_GET['content']))
 ?>
 <?php
 if(isset($_SESSION["cart_item"])){
-    $total_quantity = 0;
-    $total_price = 0;
-    ?>
-    <table width="90%" style="margin:auto;">
-        <tbody>
-        <tr style="background: blue;color:#fff;">
-            <th style="text-align:left;">Name</th>
-            <th style="text-align:left;">Code</th>
-            <th style="text-align:right;" width="5%">Quantity</th>
-            <th style="text-align:right;" width="5%">WEIGHT</th>
-            <th style="text-align:right;" width="15%">Unit Price</th>
-            <th style="text-align:right;" width="15%">Price</th>
-        </tr>
-        <br>
+$total_quantity = 0;
+$total_price = 0;
+?>
+    <style>
+        form > div {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        form > div > p {
+            min-width: 33.33%;
+            padding: 10px;
+        }
+
+        form p { color: #38ef7d; }
+
+        /* ------------------- */
+        /* Form Styles
+        /* ----------------- */
+
+        form > div { margin-bottom: 1em; }
+
+        button,
+        input,
+        optgroup,
+        select,
+        keygen::-webkit-keygen-select,
+        select[_moz-type="-mozilla-keygen"],
+        textarea {
+            color: inherit;
+            font: inherit;
+            margin: 0;
+            margin-top: 0.5em;
+        }
+
+        label {
+            display: block;
+            margin: 0.75em 0;
+            font-weight: bold;
+        }
+        input {
+            line-height: normal;
+        }
+
+        textarea { line-height: 1.25em; }
+    </style>
+<div class= "checkout">
+    <h2>Daftar Isi Keranjang</h2>
         <?php
 
-        foreach($_SESSION["cart_item"] as $item) :
+            foreach($_SESSION["cart_item"] as $item) :
             $item_price = $item["quantity"]*$item["HARGA_PRODUK"];
             $item_weight = $item["quantity"]*$item["BERAT_PRODUK"];
         ?>
-            <tr>
-                <td><img width="50" height="50" src="./img-barang/<?php echo $item["FILE_FOTO"]; ?>" class="cart-item-image" /><?php echo $item["NAMA_PRODUK"]; ?></td>
-                <td><?php echo $item['KODE_PRODUK'];?></td>
-                <td><?php echo $item['quantity'];?></td>
-                <td><?php echo $item_weight ;?></td>
-                <td><?php echo rupiah($item['HARGA_PRODUK']);?></td>
-                <td><?php echo rupiah($item_price) ;?></td>
-            </tr>
-            <?php
-            $total_quantity += $item["quantity"];
-            $total_price += ($item["HARGA_PRODUK"]*$item["quantity"]);
-        endforeach;
+                <img src="./img-barang/<?php echo $item["FILE_FOTO"]; ?>" class="cart-item-image" />
+                <p>
+                    <span class= "itemname"><?php echo $item["NAMA_PRODUK"]; ?></span>
+                    <br>
+                    <?php echo rupiah($item_price); ?>
+                    <br>
+                    <?php echo $item["quantity"]; ?> pcs
+                    <br>
+                    @ <?php echo rupiah($item["HARGA_PRODUK"]); ?>
+                </p>
+                <?php
+                $total_quantity += $item["quantity"];
+                $total_price += ($item["HARGA_PRODUK"]*$item["quantity"]);
+            endforeach;
         ?>
-        <tr>
-            <td colspan="2">Total:</td>
-            <td colspan="1"><?php echo $total_quantity; ?></td>
-            <td colspan="2"><strong><?php echo rupiah($total_price); ?></strong></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+    <p>
+        <span class= "itemname">Total Semua : </span>
+        <br>
+        <?php echo $total_quantity; ?> pcs
+        <br>
+        <?php echo rupiah($total_price); ?> pcs
+    </p>
+</div>
     <?php
 }
 $stmt = $conn->prepare("SELECT * FROM penjualan");
@@ -66,44 +102,49 @@ $auto_kode = "TRX" .str_pad($kode_trx, 5, "0",  STR_PAD_LEFT);
 ?>
 <hr>
 <?php
-//foreach($_SESSION['cart_item'] as $index => $value)
-//    echo "Var = " . $value['quantity'];
-//print_r(array_values($_SESSION['cart_item']));
-//print_r(array_values($_SESSION["cart_item"]),BRG002);
+$pos = $conn->prepare("SELECT * FROM ongkir");
+$pos->execute();
 ?>
 <form method="post" action="" enctype="multipart/form-data">
-    <table cellpadding="8">
-        <tr>
-            <td>ID Transaksi</td>
-            <td><input type="text" name="txt_transaksi" value="<?php echo $auto_kode ?>" readonly></td>
-        </tr>
-        <tr>
-            <td>Nama Penerima</td>
-            <td><input type="text" name="txt_namapenerima"></td>
-        </tr>
-        <tr>
-            <td>Alamat  Penerima</td>
-            <td><textarea type="text" rows="5" name="txt_alamatpenerima"></textarea></td>
-        </tr>
-        <tr>
-            <td>Kode Pos</td>
-            <td><input type="text" name="txt_kodepospenerima"></td>
-        </tr>
-        <tr>
-            <td>Nomor Telepon</td>
-            <td><input type="text" name="txt_hppenerima"></td>
-        </tr>
-
-    </table>
-    <hr>
-    <input type="submit" name="btnsave" value="Final">
-<!--    <a href="index.php?content=--><?php //echo 'product.php' ?><!--"><input type="button" value="Batal"></a>-->
+    <div style="margin:auto">
+        <p>
+            <label>Nama Penerima<br>
+                <input type="text" placeholder="Nama Penerima" name="txt_namapenerima">
+            </label>
+        </p>
+        <p>
+            <label>Alamat<br>
+                <textarea rows="5" cols="40" placeholder="Jl. Ciwaruga No. 48" name="txt_alamatpenerima"></textarea>
+            </label>
+        </p>
+        <p>
+            <label>Kode Pos<br>
+                <select name="txt_kodepospenerima">
+                    <option value="" disabled selected>Select...</option>
+                    <?php
+                        foreach($pos as $row):
+                    ?>
+                    <option value="<?php echo $row['KODE_POS_TUJUAN'] ?>"><?php echo $row['KODE_POS_TUJUAN'].' - '.$row['KOTA'] ?></option>
+                        <?php
+                        endforeach;
+                    ?>
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>Nomor HP<br>
+                <input type="tel" placeholder="081927145985" name="txt_hppenerima">
+            </label>
+        </p>
+    </div>
+    <center>
+        <input type="submit" name="btnsave" value="Proses"></center>
 </form>
 <?php
 error_reporting( ~E_NOTICE ); // avoid notice
 if(isset($_POST['btnsave']))
 {
-    $idTransaksi = $_POST['txt_transaksi'];
+    $idTransaksi = $auto_kode;
     $namaPenerima = $_POST['txt_namapenerima'];
     $alamatPenerima = $_POST['txt_alamatpenerima'];
     $kodeposPenerima = $_POST['txt_kodepospenerima'];
@@ -125,8 +166,10 @@ if(isset($_POST['btnsave']))
 
     try{
         $stmt->execute();
-        echo "new record succesfully inserted ...";
-        header("location:index.php?content=summary.php"); // redirects image view page after 5 seconds.
+        echo '<META HTTP-EQUIV="Refresh" Content="0; URL=index.php?content=summary.php">';
+        exit;
+//        header("location:index.php?content=summary.php");
+//        echo "new record succesfully inserted ...";
     }catch(PDOException $e) {
         echo $e->getMessage();
     }

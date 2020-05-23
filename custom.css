@@ -1,8 +1,5 @@
-body{
-
-}
 .main-section{
-    margin-top:20px;
+    margin-top:20px;width: 70%;
 }
 .add-sens{
     position: absolute;
@@ -21,7 +18,7 @@ body{
     transition: 0.5s;
     cursor: pointer;
 }
-.sectin-title h1{
+.section-title h1{
     font-weight:700;
     font-size:23px;
     color:#285A63;

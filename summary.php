@@ -10,10 +10,11 @@ $id_transaksi = $_SESSION['id_transaksi'][$n];
 $id_pos = $_SESSION['id_pos'][$n];
 ?>
 
-<div style="margin: auto; text-align:center">
+<div class= "checkout" style="margin: auto">
     <?php
-    echo "========= Barang yang dibeli ===========<br>";
-    echo "ID Transaksi = ". $id_transaksi."<br><br>";
+    echo "<center><h2>DATA TRANSAKSI</h2>";
+    echo "<hr>";
+    echo "ID Transaksi = <b>". $id_transaksi."</b></center><br><br>";
     foreach($_SESSION["cart_item"] as $item){
 
         $total_quantity = 0;
@@ -30,13 +31,16 @@ $id_pos = $_SESSION['id_pos'][$n];
         $total += $subtotal;
         $sisa_stok = (int)$item['STOK_PRODUK'] - (int)$item['quantity'];
 
-        echo "Nama Produk = ".$item['NAMA_PRODUK']."<br><br>";
-
-        echo "Harga = ".rupiah($item['HARGA_PRODUK'])."<br><br>";
-
-        echo "Jumlah yang dipesan = ".$item['quantity']." | Total Berat = ".$item_weight."kg <br><br>";
-        echo "Sisa Stok = ".$sisa_stok."<br><br>";
-        echo "Biaya Subtotal = ".rupiah($subtotal)."<br><br>";
+        echo '<img src="./img-barang/'.$item["FILE_FOTO"]. '" class="cart-item-image" />';
+        echo '<p>';
+        echo '<span class= "itemname">'.$item["NAMA_PRODUK"].'</span>';
+        echo '<br>';
+        echo rupiah($item_price);
+        echo '<br>';
+        echo $item["quantity"].' pcs | '.$berat.'kg' ;
+        echo '<br>';
+        echo '@ '.rupiah($item["HARGA_PRODUK"]);
+        echo '</p>';
 
         //Insert ke Proses Jual
         $prosesJual = $conn->prepare("INSERT INTO proses_jual (ID_TRANSAKSI, ID_PRODUK, HARGA_PRODUK, JUMLAH_PRODUK) VALUES (:id_trx, :id_prd, :harga, :jumlah)");
@@ -59,11 +63,19 @@ $id_pos = $_SESSION['id_pos'][$n];
             }catch(PDOException $e) {
                 echo $e->getMessage();
             }
+        $total_quantity += $item["quantity"];
+        $total_price += ($item["HARGA_PRODUK"]*$item["quantity"]);
         }
+        echo '<hr><p>';
+        echo '<span class= "itemname">Total Berat : </span>';
+        echo '<br>';
+        echo $total_berat.'kg';
+        echo '<br>';
+        echo '<span class= "itemname">Total Harga : </span>';
+        echo '<br>';
+        echo rupiah($total);
+        echo '</p><hr>';
 
-        echo "========= XX ==========="."<br>";
-        echo"Total Berat = ".$total_berat." kg <br><br>";
-        echo 'Total Harga = '. rupiah($total) .'<br><br>';
 
         //Update Penjualan
         $updatePenjualan = $conn->prepare('UPDATE penjualan SET TOTAL_PEMBAYARAN = :total where ID_TRANSAKSI = :id_trx');
@@ -86,10 +98,13 @@ $id_pos = $_SESSION['id_pos'][$n];
 
         foreach ($ongkir as $row){
             $pos_tujuan = $row["ID_POS"];
+            $kota_tujuan = $row["KOTA"];
             $ongkir = $row["biaya_ongkir"];
         }
-        echo "Kode pos tujuan = ".$id_pos."<br><br>";
-
+        echo '<span class= "itemname">Kode Pos Tujuan : </span>';
+        echo '<br>';
+        echo $id_pos;
+        echo '<br>';
         $berat_sisa = $total_berat;
         $tambahin = 1.0;
         while($berat_sisa > 1){
@@ -107,10 +122,19 @@ $id_pos = $_SESSION['id_pos'][$n];
             $ongkir = $ongkir*$total_berat;
         }
 
-        echo "Biaya Ongkir = ".$ongkir."<br><br>";
+        echo '<span class= "itemname">Biaya Ongkir : </span>';
+        echo '<br>';
+        echo $ongkir;
+        echo ' ('.$kota_tujuan.')';
+        echo '<br>';
+
         $total_harga = $total + $ongkir;
 
-        echo "Total Harga + Ongkir = ".$total_harga."<br><br>";
+        echo '<span class= "itemname">Total Harga + Ongkir : </span>';
+        echo '<br>';
+        echo $total_harga;
+        echo '<br>';
+        unset($_SESSION["cart_item"]);
     ?>
 
 </div>

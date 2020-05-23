@@ -1,4 +1,3 @@
-
 <?php
 //    session_start();    //session start
 //    if(!isset($_SESSION['username']))     //if session not found redirect to login_tanpa_database.php
@@ -10,51 +9,39 @@
         $vcontent = 'home.php';
     }else
     {
-        $vcontent =$_GET['content'];
+        $vcontent = $_GET['content'];
     }
 
 ?>
 <html>
 <head>
-    <title>TUGAS</title>
-<style>
-    table, th, td {
-        border-collapse: collapse;
-        border: 1px solid black;
-        /*text-align: center;*/
-        margin: auto;
-    }
-</style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
+    <title>IrvanKadhafi's Store</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div class="title">
+        IrvanKadhafi's <span style="color: #11998e">Store</span> <br>
+    </div>
 
-<table style="width:800px">
-    <tr style="height: 100px" class="text-center">
-        <td>
-            <h1>Irvan's Store</h1>
-<!--            <img src="polban.png" alt="Polban" align="left" height="110px" width="110px">-->
-<!--            <img src="github.png" alt="Github" align="right" height="110px" width="110px">-->
-        </td>
-    </tr>
+    <div class= "admin">
+        <a href= "login.php">Login</a>
+    </div>
 
-    <tr style="height: 50px" class="text-center">
-        <td><a href="index.php?content=<?php echo 'home.php' ?>">HOME</a>     |
-            <a href="index.php?content=<?php echo 'insertproduct.php' ?>">INSERT</a>     |
-            <a href="index.php?content=<?php echo 'product.php' ?>">PRODUCT</a>     |
-            <a href="index.php?content=<?php echo 'cartlist.php' ?>">CART</a>
+    <div class="navigation_bar">
+        <ul>
+            <li><a class="active" href="index.php?content=<?php echo 'home.php' ?>">Home</a></li>
+            <li><a href="index.php?content=<?php echo 'catalog.php' ?>">Catalog</a></li>
+            <li><a href="index.php?content=<?php echo 'cartlist.php' ?>">Cart</a></li>
+            <li><a href="index.php?content=<?php echo 'cartlist.php' ?>">Purchases</a></li>
+        </ul>
+    </div>
 
-
-        </td>
-    </tr>
-
-    <tr style="height: 200px">
-        <td><?php include $vcontent; ?></td>
-    </tr>
-
-    <tr style="height: 100px">
-    </tr>
-</table>
+    <div class="main-section" style="margin-top:15px">
+        <?php include $vcontent; ?>
+    </div>
 </body>
 </html>
