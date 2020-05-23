@@ -1,9 +1,9 @@
 <?php
-//    session_start();    //session start
-//    if(!isset($_SESSION['username']))     //if session not found redirect to login_tanpa_database.php
-//    {
-//        header('location: login_tanpa_database.php');
-//    }
+    session_start();    //session start
+    if(!isset($_SESSION['username']))     //if session not found redirect to login_tanpa_database.php
+    {
+        header('location: ../index.php?content=login.php');
+    }
     if(!isset($_GET['content']))
     {
         $vcontent = 'home.php';
@@ -28,15 +28,15 @@
     </div>
 
     <div class= "admin">
-        <a href= "index.php?content=<?php echo 'login.php' ?>">Login</a>
+        <span>Selamat datang Admin!</span>
     </div>
 
     <div class="navigation_bar">
         <ul>
-            <li><a class="active" href="index.php?content=<?php echo 'home.php' ?>">Home</a></li>
-            <li><a href="index.php?content=<?php echo 'catalog.php' ?>">Catalog</a></li>
-            <li><a href="index.php?content=<?php echo 'cartlist.php' ?>">Cart</a></li>
-<!--            <li><a href="index.php?content=--><?php //echo 'cartlist.php' ?><!--">Purchases</a></li>-->
+            <li><a href="index.php?content=<?php echo 'insertproduct.php' ?>">Insert Products</a></li>
+<!--            <li><a href="index.php?content=--><?php //echo 'updateproduct.php' ?><!--">Update Products</a></li>-->
+            <li><a href="index.php?content=<?php echo 'history.php' ?>">History Transactions</a></li>
+            <li><a href="index.php?content=<?php echo 'logout.php' ?>">Log Out</a></li>
         </ul>
     </div>
 

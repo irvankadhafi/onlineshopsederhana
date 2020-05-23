@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION['username']))
+{
+    header('location: ../login.php');
+}
 require_once 'connector.php';
 if(!isset($_GET['content']))
 {
@@ -48,7 +53,7 @@ $kode_faktur = $stmt->rowCount();
     </table>
     <hr>
     <input type="submit" name="btnsave" value="Simpan">
-    <a href="index.php?content=<?php echo 'product.php' ?>"><input type="button" value="Batal"></a>
+    <a href="../index.php?content=<?php echo 'catalog.php' ?>"><input type="button" value="Batal"></a>
 </form>
 <?php
 error_reporting( ~E_NOTICE ); // avoid notice
@@ -108,7 +113,7 @@ if(isset($_POST['btnsave']))
         {
             $successMSG = "new record succesfully inserted ...";
             echo "new record succesfully inserted ...";
-            header("location:index.php?content=product.php"); // redirects image view page after 5 seconds.
+            header("location:index.php?content=catalog.php"); // redirects image view page after 5 seconds.
         }
         else
         {

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require("connector.php");
+
 if(!isset($_GET['content']))
 {
     $vcontent = 'product.php';
@@ -95,7 +96,7 @@ if(!isset($_GET['content']))
                             <div class="col-12 pb-2">
                                 <div class="row">
                                     <div class="col-lg-12 text-center">
-                                        <input type="text" name="quantity" value="1" size="1" />  <input type="submit" value="Add to Cart" class="btn btn-danger" />
+                                        <input type="text" name="quantity" value="1" size="1" />  <input type="submit" value="Add to Cart" class="btn btn-danger" name="submit" />
                                     </div>
                                 </div>
                             </div>

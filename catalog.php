@@ -60,7 +60,7 @@ require("connector.php");
             }
             ?>
             <div class="col-lg-3" style="margin-top: 20px">
-                <form method="post" action="product.php?aksi=addcart&kode=<?php echo $row['KODE_PRODUK']; ?>">
+                <form method="post" action="catalog.php?aksi=addcart&kode=<?php echo $row['KODE_PRODUK']; ?>">
                     <div class="section bg-white p-1 grid-katalok">
                         <div class="row">
                             <div class="col-lg-12 img-section">
