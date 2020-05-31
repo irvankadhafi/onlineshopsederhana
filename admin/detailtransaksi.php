@@ -89,7 +89,9 @@ foreach($result as $row):
 
     $item_price = $row["JUMLAH_PRODUK"]*$row["HARGA_PRODUK"];
     $berat = $produknya['BERAT_PRODUK']*$row['JUMLAH_PRODUK'];
-
+    $subtotal = $row['HARGA_PRODUK']*$row['JUMLAH_PRODUK'];
+    $total += $subtotal;
+    $total_berat += $berat;
     echo '<img src="../img-barang/'.$produknya["FILE_FOTO"]. '" class="cart-item-image" />';
     echo '<p>';
     echo '<span class= "itemname">'.$produknya["NAMA_PRODUK"].'</span>';
@@ -102,6 +104,58 @@ foreach($result as $row):
     echo '</p>';
 
     endforeach;
+    ?>
+<?php
+    echo '<span class= "itemname">Total Harga Barang : </span>';
+    echo '<br>';
+    echo rupiah($total);
+    echo '<br>';
+    //Select Ongkir
+    $ongkir = $conn->prepare("SELECT * FROM ongkir where KODE_POS_TUJUAN = :id_pos");
+    $ongkir->bindParam(':id_pos',$penjualan['POS_TUJUAN']);
+    try{
+        $ongkir->execute();
+    }catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+    foreach ($ongkir as $row2){
+        $pos_tujuan = $row2["KODE_POS_TUJUAN"];
+        $kota_tujuan = $row2["KOTA"];
+        $ongkir = $row2["biaya_ongkir"];
+    }
+    echo '<span class= "itemname">Kode Pos Tujuan : </span>';
+    echo '<br>';
+    echo $pos_tujuan.'('.$kota_tujuan.')';
+    echo '<br>';
+    echo '<span class= "itemname">Total Berat Barang : </span>';
+    echo '<br>';
+    echo $total_berat.' kg';
+    echo '<br>';
+
+    $berat_sisa = $total_berat;
+    $tambahin = 1.0;
+    while($berat_sisa > 1){
+        $berat_sisa = $berat_sisa - 1;
+    }
+    if($berat_sisa == 1){
+        $ongkir = $ongkir*$total_berat;
+    }else if ($berat_sisa > 0.3 || $berat_sisa > 1.3 || $berat_sisa > 2.3) {
+        $tambahin = $tambahin - $berat_sisa;
+        $total_berat = $total_berat + $tambahin;
+        $ongkir = $ongkir*$total_berat;
+    } else {
+        $total_berat = $total_berat - $berat_sisa;
+        $ongkir = $ongkir*$total_berat;
+    }
+    echo '<span class= "itemname">Biaya Ongkir : </span>';
+    echo '<br>';
+    echo rupiah($ongkir);
+    echo '<br>';
+
+    echo '<span class= "itemname">Total Harga + Ongkir : </span>';
+    echo '<br>';
+    echo rupiah($total + $ongkir);
+    echo '<br>';
     echo '</div>';
     ?>
 <a id="btnback" href ="index.php?content=<?php echo 'history.php' ?>">Kembali</a>

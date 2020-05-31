@@ -155,9 +155,10 @@ if(isset($_POST['btnsave']))
     $_SESSION['id_transaksi'][$i] = $idTransaksi;
     $_SESSION['id_pos'][$i] = $kodeposPenerima;
     $statusbayar = 0;
-    $stmt = $conn->prepare('INSERT INTO penjualan(NAMA_PEMBELI, ALAMAT, NO_HP, ID_TRANSAKSI, TGL_TRANSAKSI,TOTAL_PEMBAYARAN, STATUS) VALUES(:nama, :alamat, :hp, :id, :tgl, :total,:sts)');
+    $stmt = $conn->prepare('INSERT INTO penjualan(NAMA_PEMBELI, ALAMAT,POS_TUJUAN , NO_HP, ID_TRANSAKSI, TGL_TRANSAKSI,TOTAL_PEMBAYARAN, STATUS) VALUES(:nama, :alamat,:pos, :hp, :id, :tgl, :total,:sts)');
     $stmt->bindParam(':nama',$namaPenerima);
     $stmt->bindParam(':alamat',$alamatPenerima);
+    $stmt->bindParam(':pos',$kodeposPenerima);
     $stmt->bindParam(':hp',$hpPenerima);
     $stmt->bindParam(':id',$idTransaksi);
     $stmt->bindParam(':tgl',$tgl);
