@@ -1,5 +1,6 @@
 <?php
 session_start();
+unset($_SESSION["current_trx"]);
 if(!isset($_SESSION['username']))
 {
     header('location: ../index.php?content=login.php');
@@ -33,6 +34,11 @@ if(!empty($_GET["aksi"])) {
                 echo $e->getMessage();
             }
             break;
+        case "detail":
+            $_SESSION['current_trx'] =  $_GET['idtrx'];
+
+            header("location: index.php?content=detailtransaksi.php");
+            break;
     }
 
 }
@@ -64,7 +70,7 @@ if(!empty($_GET["aksi"])) {
         ?>
                 <form method="post" action="history.php?aksi=update&kode=<?php echo $row['ID_TRANSAKSI']; ?>&status=<?php echo $row['STATUS']; ?>">
             <li class="table-row">
-                <div class="col col-1" data-label="ID_TRX"><?php echo $row["ID_TRANSAKSI"]; ?></div>
+                <div class="col col-1" data-label="ID_TRX"><a href="history.php?aksi=detail&idtrx=<?php echo $row["ID_TRANSAKSI"]; ?>" ><?php echo $row["ID_TRANSAKSI"]; ?></a></div>
                 <div class="col col-2" data-label="TGL"><?php echo $row["TGL_TRANSAKSI"]; ?></div>
                 <div class="col col-3" data-label="PEMBELI"><?php echo $row["NAMA_PEMBELI"]; ?></div>
                 <div class="col col-4" data-label="TOTAL BAYAR"><?php echo rupiah($row["TOTAL_PEMBAYARAN"]); ?></div>
@@ -75,7 +81,7 @@ if(!empty($_GET["aksi"])) {
                     else if ($row["STATUS"]==1)
                         echo '<input type="submit" value="'.$statuz.'" class="btn btn-warning" name="submit" />';
                     else if ($row["STATUS"]==2)
-                        echo '<input type="submit" value="'.$statuz.'" class="btn btn-primary" name="submit" />';
+                        echo '<span class="btn btn-primary">'.$statuz.'</span>';
                     ?>
 <!--                    <input type="submit" value="--><?php //echo $statuz; ?><!--" class="btn btn-danger" name="submit" />-->
                     </form>

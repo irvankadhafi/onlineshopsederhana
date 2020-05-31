@@ -4,6 +4,7 @@ require("connector.php");
 ?>
 <!DOCTYPE html>
 <html>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <body>
 <div class="container" style="font-family: 'Roboto Condensed', sans-serif;">
     <div class="row">
